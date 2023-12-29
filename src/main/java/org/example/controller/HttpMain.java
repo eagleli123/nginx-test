@@ -13,13 +13,13 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class HttpMain {
     public static void main(String[] args) {
-        ThreadPoolExecutor executorService = new ThreadPoolExecutor(500, 500, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000), new ThreadPoolExecutor.DiscardPolicy());
+        ThreadPoolExecutor executorService = new ThreadPoolExecutor(100, 100, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000), new ThreadPoolExecutor.DiscardPolicy());
         AtomicLong atomicLong = new AtomicLong();
         while (true) {
             executorService.submit(() -> {
                 try {
                     RestTemplate restTemplate = new RestTemplate();
-                    String url = String.format("http://127.0.0.1:8800/hello?i=%s", atomicLong.addAndGet(1));
+                    String url = String.format("http://127.0.0.1:8080/hello?i=%s", atomicLong.addAndGet(1));
                     String response = restTemplate.getForObject(url, String.class);
                     System.out.println(String.format("url=%s, res=%s", url, response));
                 } catch (Exception e) {
